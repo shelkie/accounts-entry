@@ -26,46 +26,42 @@
         {{else}}
             <p class="entry-signin-cta">{{i18n "ifYouAlreadyHaveAnAccount"}} <a href="/sign-in">{{i18n "signin"}}</a>.</p>
         {{/if}}
-        {{> entryError}}
         {{#if passwordLoginService}}
           <form class="entry-form {{signupClass}}" id='signUp'>
-            {{#if showUsername}}
-              <div class="form-group">
-                <label>{{i18n "username"}}</label>
-                <input autofocus name="username" type="string" class="form-control" value=''>
-              </div>
-            {{/if}}
 
             {{#if showEmail}}
               <div class="form-group">
-                <label>{{i18n "emailAddress"}}</label>
                 {{#if showUsername}}
-                  <input type="email" class="form-control" value='{{emailAddress}}'>
+                  <input type="email" class="form-control" value='{{emailAddress}}' autocomplete="off" placeholder="{{i18n 'emailAddress'}}">
                 {{else}}
-                  <input autofocus type="email" class="form-control" value='{{emailAddress}}'>
+                  <input autofocus type="email" class="form-control" autocomplete="off" value='{{emailAddress}}'>
                 {{/if}}
               </div>
             {{/if}}
 
             <div class="form-group">
-              <label>{{i18n "password"}}</label>
-              <input type="password" class="form-control" value=''>
+              <input type="password" class="form-control" value='' placeholder="{{i18n 'password'}}">
             </div>
 
-            {{#if showSignupCode}}
+            {{#if showUsername}}
               <div class="form-group">
-                <label>{{i18n "signupCode"}}</label>
-                <input name="signupCode" type="string" class="form-control" value=''>
+                  <input autofocus name="username" type="string" class="form-control" autocomplete="off" placeholder="{{i18n 'username'}}" value=''>
               </div>
             {{/if}}
 
+            {{#if showSignupCode}}
+              <div class="form-group">
+                <input name="signupCode" type="string" class="form-control" value='' autocomplete="off" placeholder="{{i18n 'signupCode'}}">
+              </div>
+            {{/if}}
+              {{> entryError}}
             <button type="submit" class="submit btn btn-block btn-default">{{i18n "signUp"}}</button>
           </form>
         {{/if}}
         {{#if both}}
           <p class="entry-agreement">{{i18n "clickAgree"}}
-            <a href="{{privacyUrl}}">{{i18n "privacyPolicy"}}</a> {{i18n "and"}}
-            <a href="{{termsUrl}}">{{i18n "terms"}}</a>.
+              <a href="{{termsUrl}}">{{i18n "terms"}}</a> {{i18n "and"}}
+              <a href="{{privacyUrl}}">{{i18n "privacyPolicy"}}</a>.
           </p>
         {{else}}
           {{#unless neither}}
