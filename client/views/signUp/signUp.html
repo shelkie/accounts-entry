@@ -29,36 +29,33 @@
         {{> entryError}}
         {{#if passwordLoginService}}
           <form class="entry-form {{signupClass}}" id='signUp'>
-            {{#if showUsername}}
-              <div class="form-group">
-                <label>{{t9n "username"}}</label>
-                <input autofocus name="username" type="string" class="form-control" value=''>
-              </div>
-            {{/if}}
 
             {{#if showEmail}}
               <div class="form-group">
-                <label>{{t9n "emailAddress"}}</label>
                 {{#if showUsername}}
-                  <input type="email" class="form-control" value='{{emailAddress}}'>
+                  <input type="email" class="form-control" value='{{emailAddress}}' autocomplete="off" placeholder="{{t9n 'emailAddress'}}">
                 {{else}}
-                  <input autofocus type="email" class="form-control" value='{{emailAddress}}'>
+                  <input autofocus type="email" class="form-control"  autocomplete="off" value='{{emailAddress}}'>
                 {{/if}}
               </div>
             {{/if}}
 
+            {{#if showUsername}}
+              <div class="form-group">
+                  <input autofocus name="username" type="string" class="form-control" autocomplete="off" placeholder="{{t9n 'username'}}" value=''>
+              </div>
+            {{/if}}
+
             <div class="form-group">
-              <label>{{t9n "password"}}</label>
-              <input type="password" class="form-control" value=''>
+                <input type="password" class="form-control" value='' placeholder="{{t9n 'password'}}">
             </div>
 
             {{#if showSignupCode}}
               <div class="form-group">
-                <label>{{t9n "signupCode"}}</label>
-                <input name="signupCode" type="string" class="form-control" value=''>
+                <input name="signupCode" type="string" class="form-control" value='' autocomplete="off" placeholder="{{t9n 'signupCode'}}">
               </div>
             {{/if}}
-
+              {{> entryError}}
             <button type="submit" class="submit btn btn-block btn-default">{{t9n "signUp"}}</button>
           </form>
         {{/if}}
