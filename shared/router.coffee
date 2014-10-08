@@ -6,6 +6,9 @@ Router.map ->
       Session.set('entryError', undefined)
       Session.set('buttonText', 'in')
     onRun: ->
+      if Meteor.userId()
+        Router.go AccountsEntry.settings.dashboardRoute
+
       if AccountsEntry.settings.signInTemplate
         @template = AccountsEntry.settings.signInTemplate
 
@@ -59,15 +62,25 @@ Router.map ->
 
   @route 'entrySignOut',
     path: '/sign-out'
-    onBeforeAction: ->
+    onBeforeAction: (pause)->
       Session.set('entryError', undefined)
       if AccountsEntry.settings.homeRoute
         Meteor.logout () ->
           Router.go AccountsEntry.settings.homeRoute
-      @pause()
+      pause()
 
   @route 'entryResetPassword',
     path: 'reset-password/:resetToken'
     onBeforeAction: ->
       Session.set('entryError', undefined)
       Session.set('resetToken', @params.resetToken)
+
+# Get all the accounts-entry routes one time
+exclusions = [];
+_.each Router.routes, (route)->
+  exclusions.push route.name
+# Change the fromWhere session variable when you leave a path
+Router.onStop ->
+  # If the route is an entry route, no need to save it
+  if (!_.contains(exclusions, Router.current().route.name))
+    Session.set('fromWhere', Router.current().path)
