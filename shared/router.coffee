@@ -5,6 +5,7 @@ Router.map ->
     onBeforeAction: ->
       Session.set('entryError', undefined)
       Session.set('buttonText', 'in')
+      @next()
     onRun: ->
       if Meteor.userId()
         Router.go AccountsEntry.settings.dashboardRoute
@@ -27,6 +28,7 @@ Router.map ->
 
         Template[@template].events(AccountsEntry.entrySignInEvents)
         Template[@template].helpers(AccountsEntry.entrySignInHelpers)
+      @next()
 
 
   @route "entrySignUp",
@@ -34,6 +36,7 @@ Router.map ->
     onBeforeAction: ->
       Session.set('entryError', undefined)
       Session.set('buttonText', 'up')
+      @next()
     onRun: ->
       if AccountsEntry.settings.signUpTemplate
         @template = AccountsEntry.settings.signUpTemplate
@@ -53,34 +56,37 @@ Router.map ->
 
         Template[@template].events(AccountsEntry.entrySignUpEvents)
         Template[@template].helpers(AccountsEntry.entrySignUpHelpers)
+      @next()
 
 
   @route "entryForgotPassword",
     path: "/forgot-password"
     onBeforeAction: ->
       Session.set('entryError', undefined)
+      @next()
 
   @route 'entrySignOut',
     path: '/sign-out'
-    onBeforeAction: (pause)->
+    onBeforeAction: ()->
       Session.set('entryError', undefined)
       if AccountsEntry.settings.homeRoute
         Meteor.logout () ->
           Router.go AccountsEntry.settings.homeRoute
-      pause()
+      @next()
 
   @route 'entryResetPassword',
     path: 'reset-password/:resetToken'
     onBeforeAction: ->
       Session.set('entryError', undefined)
       Session.set('resetToken', @params.resetToken)
+      @next()
 
 # Get all the accounts-entry routes one time
-exclusions = [];
+exclusions = []
 _.each Router.routes, (route)->
   exclusions.push route.name
 # Change the fromWhere session variable when you leave a path
 Router.onStop ->
   # If the route is an entry route, no need to save it
-  if (!_.contains(exclusions, Router.current().route.name))
+  if (!_.contains(exclusions, Router.current().route?.getName()))
     Session.set('fromWhere', Router.current().path)
